@@ -1,6 +1,7 @@
 'use strict';
 const {Accounts} = require('./modules/accounts/accounts.js');
 const {Setup} = require('./modules/setup/setup.js');
+const { NewSetup } = require("./modules/setup");
 const {Contracts} = require('./modules/contract/contracts.js');
 const {Transactions} = require('./modules/transactions/transactions.js');
 
@@ -9,12 +10,13 @@ class TezsterManager{
 constructor(){
     this.Accounts = new Accounts();
     this.Setup = new Setup();
+    this.newSetup = new NewSetup();
     this.Contracts = new Contracts();
     this.Transactions = new Transactions();
 } 
 
 setup(){
-    this.Setup._setup();
+    this.newSetup.__setup();
 }
 
 startNodes(){

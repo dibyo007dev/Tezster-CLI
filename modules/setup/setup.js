@@ -2,7 +2,7 @@ const childprocess = require("child_process");
 const { Helper } = require("../../helper");
 
 const Docker = require("dockerode");
-var docker = new Docker({ socketPath: "/var/run/docker.sock" });
+var docker = new Docker({  protocol: 'https',socketPath: "/var/run/docker.sock" });
 const imageTag = "tezsureinc/tezster:1.0.0";
 const containerName = "tezster";
 
@@ -182,17 +182,16 @@ class Setup {
                     "-c",
                     "cd /usr/local/bin && start_nodes.sh && tail -f /dev/null"
                   ]
-                },
+                };
 
                 const startOptions = {
                   PortBindings: {
-                    "18731/tcp": [
-                      {
-                        HostPort: "18731"
-                      }
-                    ]
-                  }
-                };
+                      "18731/tcp": [{
+                          "HostIP":"0.0.0.0",
+                          "HostPort": "18731"
+                      }]
+                  },
+              };
 
                 return new Promise((resolve, reject) => {
                   docker.createContainer(
@@ -202,12 +201,8 @@ class Setup {
                         console.log("Create Container Err", createContainerErr)
                       }
                       container.start(startOptions, function(startContainerErr, data) {
-                        if (startContainerErr)
-                          console.log(
-                            self.helper.outputError(
-                              "Check whether docker is installed or not"
-                            )
-                          );
+                        if (startContainerErr) console.log( self.helper.outputError(" Check whether docker is installed or not "));
+                        resolve(data);
                       });
                     }
                   );

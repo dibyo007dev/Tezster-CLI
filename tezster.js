@@ -5,12 +5,16 @@ const program = require("commander");
 const {TezsterManager} = require("./tezster-manager");
 const tezstermanager = new TezsterManager();
 
+const global  = {
+    Docker: require("dockerode")
+}
+
 program
 .version('0.1.9', '-v, --version')
 .command('setup')
 .description('To set up Tezos nodes')
 .action(function(){  
-    tezstermanager.setup();
+    tezstermanager.setup(global);
 });
 
 program.command('start-nodes')
